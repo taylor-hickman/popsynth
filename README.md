@@ -2,6 +2,8 @@
 
 Pop Synth is a developer tool for generating themed synthetic data from a database-shaped schema. Use the web app to paste and edit a schema, or use the `popsynth` CLI to generate CSV files from scripts and CI workflows.
 
+![Pop Synth web app](docs/screenshots/web-home.png)
+
 ## Features
 
 - Accept schema input as SQL DDL, CSV headers/sample rows, JSON Schema, or dbt YAML.
@@ -135,20 +137,7 @@ pnpm build
 pnpm pack:dry-run
 ```
 
-## Current Scope
-
-Implemented:
-
-- SQL, CSV, JSON Schema, and dbt YAML schema input.
-- In-browser schema editing.
-- npm-distributed CLI package under `packages/popsynth`.
-- Compact structured planning.
-- Per-table row counts.
-- SSE row streaming.
-- CSV preview, copy, and zip download.
-- CLI CSV directory output with parse, plan, and generate commands.
-
-Planned:
+## Roadmap
 
 - JSON output.
 - Postgres SQL INSERT output.
