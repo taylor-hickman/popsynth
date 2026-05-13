@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import JSZip from "jszip";
-import type { FormatterOutput } from "@/lib/types";
+import type { FormatterOutput } from "popsynth/core";
 
 export function DownloadPanel({
   files,

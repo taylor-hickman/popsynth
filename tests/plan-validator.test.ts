@@ -2,8 +2,8 @@ import { describe, expect, it } from "vitest";
 import {
   PlanValidationError,
   validatePlanAgainstSchema,
-} from "@/lib/plan-validator";
-import type { GenerationPlan, SchemaIR } from "@/lib/types";
+} from "popsynth/core";
+import type { GenerationPlan, SchemaIR } from "popsynth/core";
 
 const schema: SchemaIR = {
   tables: [

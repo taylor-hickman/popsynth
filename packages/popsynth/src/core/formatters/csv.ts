@@ -1,6 +1,6 @@
 import Papa from "papaparse";
-import { sanitizeFileBasename } from "@/lib/limits";
-import type { ColumnIR, Formatter } from "@/lib/types";
+import { sanitizeFileBasename } from "../limits";
+import type { ColumnIR, Formatter } from "../types";
 
 export function rowsToCsv(
   columns: ColumnIR[],

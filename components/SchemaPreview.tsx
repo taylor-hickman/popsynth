@@ -1,4 +1,4 @@
-import type { SchemaIR } from "@/lib/types";
+import type { SchemaIR } from "popsynth/core";
 
 export function SchemaPreview({
   schema,

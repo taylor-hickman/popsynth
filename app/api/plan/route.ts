@@ -1,8 +1,12 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { runMappingAgent } from "@/lib/agent";
-import { SchemaIR } from "@/lib/types";
-import { LIMITS, RowCounts, normalizeRowCounts } from "@/lib/limits";
+import {
+  LIMITS,
+  RowCounts,
+  SchemaIR,
+  normalizeRowCounts,
+  runMappingAgent,
+} from "popsynth/core";
 
 export const runtime = "nodejs";
 export const maxDuration = 120;

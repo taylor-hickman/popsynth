@@ -1,4 +1,4 @@
-import type { GenerationPlan, SchemaIR } from "@/lib/types";
+import type { GenerationPlan, SchemaIR } from "popsynth/core";
 
 /**
  * Phase 1 (vertical slice) fixtures. PLAN.md "Build order" step 1 says: hardcoded

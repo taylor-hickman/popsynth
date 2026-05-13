@@ -1,11 +1,16 @@
-name: CI
+name: Release
 
 on:
   push:
-  pull_request:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+  id-token: write
 
 jobs:
-  verify:
+  publish:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,28 +25,21 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
-          cache: pnpm
+          node-version: 24
+          registry-url: "https://registry.npmjs.org"
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Lint
-        run: pnpm lint
-
-      - name: Typecheck
+      - name: Verify
         run: |
+          pnpm lint
           pnpm typecheck
           pnpm --filter popsynth typecheck
+          pnpm test
+          pnpm build
+          pnpm pack:dry-run
 
-      - name: Test
-        run: pnpm test
-
-      - name: Build
-        run: pnpm build
-
-      - name: Check CLI package contents
-        run: pnpm pack:dry-run
-
-      - name: Smoke test CLI package
-        run: pnpm smoke:cli
+      - name: Publish CLI package
+        working-directory: packages/popsynth
+        run: npm publish

@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { rowsToCsv } from "@/lib/formatters/csv";
-import type { ColumnIR, GeneratedRecords, SchemaIR } from "@/lib/types";
+import { rowsToCsv } from "popsynth/core";
+import type { ColumnIR, GeneratedRecords, SchemaIR } from "popsynth/core";
 import type { TableStatus, TableStatusMap } from "@/components/GenerateClient";
 
 export function GenerationPreview({

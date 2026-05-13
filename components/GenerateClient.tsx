@@ -6,13 +6,13 @@ import {
   clampRowCount,
   defaultRowCounts,
   type RowCounts,
-} from "@/lib/limits";
+} from "popsynth/core";
 import type {
   FormatterOutput,
   GeneratedRecords,
   GenerationPlan,
   SchemaIR,
-} from "@/lib/types";
+} from "popsynth/core";
 import { GenerationPreview } from "@/components/GenerationPreview";
 import { DownloadPanel } from "@/components/DownloadPanel";
 import { PlanPreview } from "@/components/PlanPreview";

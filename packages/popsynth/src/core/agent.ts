@@ -1,16 +1,16 @@
 import { generateObject, NoObjectGeneratedError } from "ai";
 import { anthropic } from "@ai-sdk/anthropic";
 import { z } from "zod";
-import { GenerationPlan, type SchemaIR } from "@/lib/types";
+import { GenerationPlan, type SchemaIR } from "./types";
 import {
   PlanValidationError,
   validatePlanAgainstSchema,
-} from "@/lib/plan-validator";
-import { normalizeRowCounts, type RowCounts } from "@/lib/limits";
+} from "./plan-validator";
+import { normalizeRowCounts, type RowCounts } from "./limits";
 
-const PLANNER_MODEL_NAME =
-  process.env.ANTHROPIC_PLANNER_MODEL ?? "claude-sonnet-4-6";
-const PLANNER_MODEL = anthropic(PLANNER_MODEL_NAME);
+export type PlannerOptions = {
+  plannerModelName?: string;
+};
 
 const SYSTEM_PROMPT = `You produce a compact GenerationPlan for a themed synthetic-data generator. The plan you produce is the vocabulary that drives downstream row generation, so the row model can only be as theme-faithful as your pools allow.
 
@@ -220,9 +220,14 @@ async function singleRun(
   theme: string,
   rowCounts: RowCounts,
   priorIssues: string[] | null,
+  options?: PlannerOptions,
 ): Promise<GenerationPlan> {
   const result = await generateObject({
-    model: PLANNER_MODEL,
+    model: anthropic(
+      options?.plannerModelName ??
+        process.env.ANTHROPIC_PLANNER_MODEL ??
+        "claude-sonnet-4-6",
+    ),
     schema: GenerationPlan,
     system: SYSTEM_PROMPT,
     prompt: buildPlannerPrompt(schema, theme, rowCounts, priorIssues),
@@ -253,16 +258,23 @@ export async function runMappingAgent(
   schema: SchemaIR,
   theme: string,
   rowCounts: RowCounts,
+  options?: PlannerOptions,
 ): Promise<GenerationPlan> {
   const normalizedCounts = normalizeRowCounts(schema, rowCounts);
   const attempts: Array<{ issues: string[] }> = [];
   try {
-    return await singleRun(schema, theme, normalizedCounts, null);
+    return await singleRun(schema, theme, normalizedCounts, null, options);
   } catch (firstErr) {
     const firstIssues = extractIssues(firstErr);
     attempts.push({ issues: firstIssues });
     try {
-      return await singleRun(schema, theme, normalizedCounts, firstIssues);
+      return await singleRun(
+        schema,
+        theme,
+        normalizedCounts,
+        firstIssues,
+        options,
+      );
     } catch (secondErr) {
       const secondIssues = extractIssues(secondErr);
       attempts.push({ issues: secondIssues });

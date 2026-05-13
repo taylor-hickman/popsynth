@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { SchemaIR } from "@/lib/types";
+import type { SchemaIR } from "./types";
 
 export const LIMITS = {
   maxThemeChars: 200,

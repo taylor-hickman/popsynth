@@ -1,6 +1,6 @@
 "use client";
 
-import { LIMITS } from "@/lib/limits";
+import { LIMITS } from "popsynth/core";
 
 const SUGGESTIONS = [
   "Star Wars",

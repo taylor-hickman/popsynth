@@ -1,6 +1,6 @@
 # Pop Synth
 
-Pop Synth is a Next.js developer tool for generating themed synthetic data from a database-shaped schema. Paste a schema, describe a pop-culture or stylistic theme, choose per-table row counts, and stream generated rows into a preview before downloading CSV files.
+Pop Synth is a developer tool for generating themed synthetic data from a database-shaped schema. Use the web app to paste and edit a schema, or use the `popsynth` CLI to generate CSV files from scripts and CI workflows.
 
 ## Features
 
@@ -14,6 +14,7 @@ Pop Synth is a Next.js developer tool for generating themed synthetic data from 
 - Deduplicate unique columns and validate LLM outputs with Zod.
 - Preview rows in fixed-height tables with per-table CSV copy buttons.
 - Download generated CSV files as a zip.
+- Install the CLI as an npm package and generate one CSV per table from the terminal.
 
 ## Schema Inputs
 
@@ -47,7 +48,7 @@ All user input is treated as untrusted data at LLM boundaries.
 
 ## Environment
 
-Create `.env.local`:
+For the web app, create `.env.local`. For the CLI, export the same variables in your shell:
 
 ```bash
 ANTHROPIC_API_KEY=your_key_here
@@ -64,6 +65,48 @@ Defaults:
 
 - Planner and CSV schema inference: `claude-sonnet-4-6`
 - Row generation: `claude-haiku-4-5`
+
+CLI flags `--planner-model` and `--row-model` override the environment for one run.
+
+## CLI
+
+Install from npm after publication:
+
+```bash
+npm i -g popsynth
+```
+
+Run without installing:
+
+```bash
+npx popsynth --help
+```
+
+Common workflows:
+
+```bash
+popsynth parse --schema schema.sql --schema-kind sql
+popsynth plan --schema schema.sql --schema-kind sql --theme "Gotham logistics" --out plan.json
+popsynth generate --schema schema.sql --schema-kind sql --theme "Studio Ghibli CRM" --out ./popsynth-output
+```
+
+Generation writes one CSV per table to `./popsynth-output` by default. It refuses to write into a non-empty directory unless `--force` is set.
+
+Useful generation flags:
+
+```bash
+popsynth generate \
+  --schema schema.sql \
+  --schema-kind sql \
+  --theme "Wes Anderson hotel lobby" \
+  --rows 25 \
+  --row users=10 \
+  --save-plan plan.json \
+  --schema-ir schema-ir.json \
+  --json
+```
+
+`--plan plan.json` reuses an existing `GenerationPlan` and skips planning. Progress and warnings go to stderr; `--json` writes a machine-readable manifest to stdout. SQL input is parsed only and is never executed.
 
 ## Getting Started
 
@@ -86,8 +129,10 @@ Open [http://localhost:3000](http://localhost:3000).
 ```bash
 pnpm lint
 pnpm typecheck
+pnpm --filter popsynth typecheck
 pnpm test
 pnpm build
+pnpm pack:dry-run
 ```
 
 ## Current Scope
@@ -96,10 +141,12 @@ Implemented:
 
 - SQL, CSV, JSON Schema, and dbt YAML schema input.
 - In-browser schema editing.
+- npm-distributed CLI package under `packages/popsynth`.
 - Compact structured planning.
 - Per-table row counts.
 - SSE row streaming.
 - CSV preview, copy, and zip download.
+- CLI CSV directory output with parse, plan, and generate commands.
 
 Planned:
 
@@ -107,3 +154,4 @@ Planned:
 - Postgres SQL INSERT output.
 - Thematic generated README files for generated datasets.
 - Per-table regeneration.
+- Homebrew and standalone native binary distribution.

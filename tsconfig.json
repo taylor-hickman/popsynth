@@ -19,7 +19,9 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "popsynth": ["./packages/popsynth/src/index.ts"],
+      "popsynth/core": ["./packages/popsynth/src/core/index.ts"]
     }
   },
   "include": [

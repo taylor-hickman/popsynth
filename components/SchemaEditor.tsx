@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { SchemaIR, type SchemaIR as SchemaIRType } from "@/lib/types";
+import { SchemaIR, type SchemaIR as SchemaIRType } from "popsynth/core";
 
 type ColumnDraft = {
   id: string;

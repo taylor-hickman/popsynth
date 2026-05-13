@@ -4,7 +4,7 @@ import { useState } from "react";
 import { SchemaInput } from "@/components/SchemaInput";
 import { ThemeInput } from "@/components/ThemeInput";
 import { GenerateClient } from "@/components/GenerateClient";
-import type { SchemaIR } from "@/lib/types";
+import type { SchemaIR } from "popsynth/core";
 
 export function HomeClient({
   initialDdl,

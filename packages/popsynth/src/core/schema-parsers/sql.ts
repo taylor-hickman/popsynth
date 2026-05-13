@@ -1,7 +1,8 @@
-import { Parser } from "node-sql-parser";
-import { DB_IDENTIFIER_RE, LIMITS } from "@/lib/limits";
-import type { ColumnIR, ForeignKeyIR, SchemaIR, TableIR } from "@/lib/types";
+import nodeSqlParser from "node-sql-parser";
+import { DB_IDENTIFIER_RE, LIMITS } from "../limits";
+import type { ColumnIR, ForeignKeyIR, SchemaIR, TableIR } from "../types";
 
+const { Parser } = nodeSqlParser;
 const PARSER = new Parser();
 const DEFAULT_DIALECT = "PostgreSQL";
 
