@@ -1,11 +1,13 @@
-import { load, JSON_SCHEMA } from "js-yaml";
-import { DB_IDENTIFIER_RE, LIMITS } from "@/lib/limits";
+import yaml from "js-yaml";
+import { DB_IDENTIFIER_RE, LIMITS } from "../limits";
 import type {
   ColumnIR,
   ForeignKeyIR,
   SchemaIR,
   TableIR,
-} from "@/lib/types";
+} from "../types";
+
+const { JSON_SCHEMA, load } = yaml;
 
 export class DbtParseError extends Error {
   readonly cause: unknown;

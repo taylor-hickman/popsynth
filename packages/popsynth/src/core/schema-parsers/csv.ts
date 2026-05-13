@@ -1,12 +1,12 @@
 import { generateObject, NoObjectGeneratedError } from "ai";
 import { anthropic } from "@ai-sdk/anthropic";
 import { z } from "zod";
-import { LIMITS } from "@/lib/limits";
-import { SchemaIR } from "@/lib/types";
+import { LIMITS } from "../limits";
+import { SchemaIR } from "../types";
 
-const PARSER_MODEL = anthropic(
-  process.env.ANTHROPIC_PLANNER_MODEL ?? "claude-sonnet-4-6",
-);
+export type CsvParseOptions = {
+  plannerModelName?: string;
+};
 
 const SYSTEM_PROMPT = `You convert CSV headers (and optional sample rows) into a SchemaIR object with exactly one table.
 
@@ -50,7 +50,10 @@ export class CsvParseError extends Error {
   }
 }
 
-export async function parseCsvHeaders(input: string): Promise<SchemaIR> {
+export async function parseCsvHeaders(
+  input: string,
+  options?: CsvParseOptions,
+): Promise<SchemaIR> {
   const trimmed = input.trim();
   if (trimmed.length === 0) {
     throw new CsvParseError("CSV input is empty");
@@ -91,11 +94,11 @@ export async function parseCsvHeaders(input: string): Promise<SchemaIR> {
   };
 
   try {
-    return await singleRun(callInput, null);
+    return await singleRun(callInput, null, options);
   } catch (firstErr) {
     const firstIssues = extractIssues(firstErr);
     try {
-      return await singleRun(callInput, firstIssues);
+      return await singleRun(callInput, firstIssues, options);
     } catch (secondErr) {
       const secondIssues = extractIssues(secondErr);
       throw new CsvParseError(
@@ -111,10 +114,15 @@ export async function parseCsvHeaders(input: string): Promise<SchemaIR> {
 async function singleRun(
   callInput: CsvParseInput,
   priorIssues: string[] | null,
+  options?: CsvParseOptions,
 ): Promise<SchemaIR> {
   const prompt = buildPrompt(callInput, priorIssues);
   const result = await generateObject({
-    model: PARSER_MODEL,
+    model: anthropic(
+      options?.plannerModelName ??
+        process.env.ANTHROPIC_PLANNER_MODEL ??
+        "claude-sonnet-4-6",
+    ),
     schema: SchemaIR,
     system: SYSTEM_PROMPT,
     prompt,

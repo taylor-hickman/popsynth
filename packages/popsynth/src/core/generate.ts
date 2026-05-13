@@ -1,7 +1,7 @@
 import { streamObject } from "ai";
 import { anthropic } from "@ai-sdk/anthropic";
 import { z, type ZodTypeAny } from "zod";
-import { clampRowCount } from "@/lib/limits";
+import { clampRowCount } from "./limits";
 import type {
   ColumnIR,
   ColumnMapping,
@@ -11,10 +11,8 @@ import type {
   SemanticType,
   TableIR,
   TablePlan,
-} from "@/lib/types";
+} from "./types";
 
-const ROW_MODEL_NAME = process.env.ANTHROPIC_ROW_MODEL ?? "claude-haiku-4-5";
-const ROW_MODEL = anthropic(ROW_MODEL_NAME);
 const DEFAULT_BATCH_SIZE = 50;
 const TEXT_BATCH_SIZE = 25;
 const MAX_EXTRA_BATCHES = 4;
@@ -45,6 +43,7 @@ export type GenerateEvent =
 
 export type GenerateOptions = {
   onEvent?: (event: GenerateEvent) => Promise<void> | void;
+  rowModelName?: string;
 };
 
 const NUMERIC_INT_TYPES: SemanticType[] = [
@@ -274,6 +273,7 @@ async function streamBatchCandidates(
   batchIndex: number,
   totalBatches: number,
   fkColumns: Set<string>,
+  options?: GenerateOptions,
 ): Promise<Record<string, unknown>[]> {
   const stablePrefix = buildStablePrefix(
     tablePlan,
@@ -292,7 +292,11 @@ async function streamBatchCandidates(
   );
 
   const stream = streamObject({
-    model: ROW_MODEL,
+    model: anthropic(
+      options?.rowModelName ??
+        process.env.ANTHROPIC_ROW_MODEL ??
+        "claude-haiku-4-5",
+    ),
     output: "array",
     schema: rowSchema,
     system: ROW_SYSTEM_PROMPT,
@@ -421,6 +425,7 @@ export async function generateTable(
       batchIndex,
       totalBatches,
       fkColumns,
+      options,
     );
 
     for (const candidate of candidates) {

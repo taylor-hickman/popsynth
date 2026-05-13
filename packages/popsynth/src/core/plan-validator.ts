@@ -1,4 +1,4 @@
-import type { GenerationPlan, SchemaIR } from "@/lib/types";
+import type { GenerationPlan, SchemaIR } from "./types";
 
 const PLACEHOLDER_ENTRY =
   /^([a-z_]+_)?(record|item|thing|entity|user|value)_\d+$/i;

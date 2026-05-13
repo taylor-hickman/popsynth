@@ -1,5 +1,5 @@
-import { DB_IDENTIFIER_RE, LIMITS } from "@/lib/limits";
-import type { ColumnIR, SchemaIR, TableIR } from "@/lib/types";
+import { DB_IDENTIFIER_RE, LIMITS } from "../limits";
+import type { ColumnIR, SchemaIR, TableIR } from "../types";
 
 export class JsonSchemaParseError extends Error {
   readonly cause: unknown;

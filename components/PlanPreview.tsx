@@ -1,4 +1,4 @@
-import type { GenerationPlan } from "@/lib/types";
+import type { GenerationPlan } from "popsynth/core";
 
 export function PlanPreview({ plan }: { plan: GenerationPlan }) {
   const pools = Object.entries(plan.entityPools).filter(

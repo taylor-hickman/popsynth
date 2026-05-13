@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { parseDbtYaml } from "@/lib/schema-parsers/dbt";
-import { parseJsonSchema } from "@/lib/schema-parsers/json-schema";
-import { parseSqlDdl, SqlParseError } from "@/lib/schema-parsers/sql";
+import { parseDbtYaml } from "popsynth/core";
+import { parseJsonSchema } from "popsynth/core";
+import { parseSqlDdl, SqlParseError } from "popsynth/core";
 
 describe("SQL schema parser", () => {
   it("accepts CREATE TABLE DDL with keys, uniqueness, foreign keys, and enum checks", () => {

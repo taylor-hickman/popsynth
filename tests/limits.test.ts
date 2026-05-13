@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { clampRowCount, sanitizeFileBasename } from "@/lib/limits";
+import { clampRowCount, sanitizeFileBasename } from "popsynth/core";
 
 describe("limits helpers", () => {
   it("clamps row counts into the supported generation range", () => {

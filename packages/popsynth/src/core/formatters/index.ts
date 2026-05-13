@@ -1,5 +1,5 @@
-import type { Formatter } from "@/lib/types";
-import { csvFormatter } from "@/lib/formatters/csv";
+import type { Formatter } from "../types";
+import { csvFormatter } from "./csv";
 
 export const FORMATS = ["csv"] as const;
 export type FormatId = (typeof FORMATS)[number];

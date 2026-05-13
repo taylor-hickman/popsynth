@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { DB_IDENTIFIER_RE, LIMITS } from "@/lib/limits";
+import { DB_IDENTIFIER_RE, LIMITS } from "./limits";
 
 export const DbIdentifier = z
   .string()

@@ -1,9 +1,12 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { generateAllTables } from "@/lib/generate";
-import { validatePlanAgainstSchema } from "@/lib/plan-validator";
-import { getFormatter } from "@/lib/formatters";
-import { GenerationPlan, SchemaIR } from "@/lib/types";
+import {
+  GenerationPlan,
+  SchemaIR,
+  generateAllTables,
+  getFormatter,
+  validatePlanAgainstSchema,
+} from "popsynth/core";
 
 export const runtime = "nodejs";
 export const maxDuration = 300;
