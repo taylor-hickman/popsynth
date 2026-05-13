@@ -2,11 +2,8 @@
 
 import { useState, useTransition } from "react";
 import { LIMITS } from "popsynth/core";
-import {
-  parseSchemaAction,
-  type SchemaInputKind,
-} from "@/lib/actions/parse-schema";
-import type { SchemaIR } from "popsynth/core";
+import { parseSchemaAction } from "@/lib/actions/parse-schema";
+import type { SchemaIR, SchemaInputKind } from "popsynth/core";
 import { SchemaPreview } from "@/components/SchemaPreview";
 import { SchemaEditor } from "@/components/SchemaEditor";
 
